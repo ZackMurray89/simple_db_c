@@ -39,3 +39,25 @@ int db_select_all(const char *filename)
     fclose(f);
     return 1; // Success
 }
+
+int db_select_key(const char *filename, int key) {
+    FILE *f = fopen(filename, "rb");
+    if (!f) {
+        perror("fopen");
+        return 0;
+    }
+
+    Record r;
+    int found = 0;
+    while (read_record(f, &r)) {
+        if (r.key == key) {
+            printf("%d | %s\n", r.key, r.value);
+            found = 1;
+            break;
+        }
+    }
+
+    fclose(f);
+
+    return found;
+}
